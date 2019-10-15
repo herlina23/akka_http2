@@ -11,6 +11,7 @@ import play.api.libs.json.Json
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 import akka.stream.scaladsl.{FileIO, Sink, Source}
+import weatherForecast.Forecast
 
 //res.entity jadikan suatu jsvalue
 
@@ -31,7 +32,12 @@ object Stream1 {
           //res.entity.dataBytes.map(_.utf8String).runForeach(println)
           val ddf = res.entity.dataBytes
             .map(_.utf8String)
-            .map{tr=>Json.parse(tr)}
+            .map{
+              str =>
+                val jsonValue = Json.parse(str)
+                val forecastOpt = jsonValue.asOpt[Forecast]
+                forecastOpt
+            }
             .runForeach(println)
 //          println(ddf)
 

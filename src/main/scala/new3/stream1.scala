@@ -27,9 +27,6 @@ object Stream1 {
     responseFuture
       .onComplete {
         case Success(res) =>
-//          println(res.entity.httpEntity)
-//          println("\n")
-          //res.entity.dataBytes.map(_.utf8String).runForeach(println)
           val ddf = res.entity.dataBytes
             .map(_.utf8String)
             .map{
@@ -39,9 +36,8 @@ object Stream1 {
                 forecastOpt
             }
             .runForeach(println)
-//          println(ddf)
 
-          //res.discardEntityBytes()
+          res.discardEntityBytes()
           //res.entity
         case Failure(_)   => sys.error("something wrong")
       }
